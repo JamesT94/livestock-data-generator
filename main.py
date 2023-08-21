@@ -20,6 +20,7 @@ Generate the following:
 
     
 TODO:
+- animals must move to a site before dying there
 - stop movements running without any available animals
 - revert journeys to become movements DONE
 - add keepers DONE
