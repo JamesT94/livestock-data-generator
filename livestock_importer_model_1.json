@@ -1,0 +1,938 @@
+{
+  "version": "0.14.0",
+  "graph": {
+    "nodes": [
+      {
+        "id": "n0",
+        "position": {
+          "x": 146,
+          "y": -69
+        },
+        "caption": "animal"
+      },
+      {
+        "id": "n1",
+        "position": {
+          "x": -556.9441334633336,
+          "y": -69
+        },
+        "caption": "site"
+      },
+      {
+        "id": "n2",
+        "position": {
+          "x": 146,
+          "y": 579.6065458850758
+        },
+        "caption": "batch"
+      },
+      {
+        "id": "n3",
+        "position": {
+          "x": -111.20121054992542,
+          "y": 196.2522943381921
+        },
+        "caption": "movement"
+      },
+      {
+        "id": "n4",
+        "position": {
+          "x": -408.38582007903926,
+          "y": 259.87915919177306
+        },
+        "caption": "vehicle"
+      },
+      {
+        "id": "n6",
+        "position": {
+          "x": -237.83140885528746,
+          "y": -253.89364597427766
+        },
+        "caption": "location"
+      },
+      {
+        "id": "n7",
+        "position": {
+          "x": -303.7705845902117,
+          "y": 461.5045886763842
+        },
+        "caption": "journey"
+      },
+      {
+        "id": "n8",
+        "position": {
+          "x": -556.9441334633336,
+          "y": 579.6065458850758
+        },
+        "caption": "leg"
+      },
+      {
+        "id": "n9",
+        "position": {
+          "x": -76.6204991593743,
+          "y": 461.5045886763842
+        },
+        "caption": "haulier"
+      },
+      {
+        "id": "n10",
+        "position": {
+          "x": 47.82722404309716,
+          "y": 51.39836826016082
+        },
+        "caption": "keeper"
+      }
+    ],
+    "relationships": [
+      {
+        "id": "n0",
+        "type": "born_at",
+        "fromId": "n0",
+        "toId": "n1"
+      },
+      {
+        "id": "n1",
+        "type": "died_at",
+        "fromId": "n0",
+        "toId": "n1"
+      },
+      {
+        "id": "n2",
+        "type": "grouped_in",
+        "fromId": "n0",
+        "toId": "n2"
+      },
+      {
+        "id": "n8",
+        "type": "located_at",
+        "fromId": "n1",
+        "toId": "n6"
+      },
+      {
+        "id": "n9",
+        "type": "to",
+        "fromId": "n3",
+        "toId": "n1"
+      },
+      {
+        "id": "n10",
+        "type": "from",
+        "fromId": "n3",
+        "toId": "n1"
+      },
+      {
+        "id": "n11",
+        "type": "includes",
+        "fromId": "n3",
+        "toId": "n2"
+      },
+      {
+        "id": "n12",
+        "type": "transported_by",
+        "fromId": "n7",
+        "toId": "n4"
+      },
+      {
+        "id": "n13",
+        "type": "delivered_in",
+        "fromId": "n3",
+        "toId": "n7"
+      },
+      {
+        "id": "n14",
+        "type": "",
+        "fromId": "n8",
+        "toId": "n2"
+      },
+      {
+        "id": "n15",
+        "type": "to",
+        "fromId": "n8",
+        "toId": "n1"
+      },
+      {
+        "id": "n16",
+        "type": "from",
+        "fromId": "n8",
+        "toId": "n1"
+      },
+      {
+        "id": "n17",
+        "type": "contains",
+        "fromId": "n7",
+        "toId": "n8"
+      },
+      {
+        "id": "n18",
+        "type": "operated_by",
+        "fromId": "n7",
+        "toId": "n9"
+      },
+      {
+        "id": "n19",
+        "type": "reports",
+        "fromId": "n10",
+        "toId": "n3"
+      }
+    ]
+  },
+  "dataModel": {
+    "configurations": {
+      "idsToIgnore": []
+    },
+    "fileModel": {
+      "fileSchemas": {
+        "my_dataframe.csv": {
+          "expanded": true,
+          "fields": [
+            {
+              "name": "animal_id",
+              "type": "string",
+              "sample": "animal_1",
+              "include": true
+            },
+            {
+              "name": "sex",
+              "type": "string",
+              "sample": "f",
+              "include": true
+            },
+            {
+              "name": "species",
+              "type": "string",
+              "sample": "cow",
+              "include": true
+            },
+            {
+              "name": "site_id",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "site_type",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "location_id",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "easting",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "northing",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "date_of_birth",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "date_of_death",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "death_site_id",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "reason_for_death",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "batch_id",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "date_added_to_batch",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "date_removed_from_batch",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "vehicle_reg",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "movement_id",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "movement_origin",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "movement_destination",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "movement_start_date",
+              "type": "string",
+              "sample": "",
+              "include": true
+            },
+            {
+              "name": "movement_end_date",
+              "type": "string",
+              "sample": "",
+              "include": true
+            }
+          ]
+        }
+      }
+    },
+    "graphModel": {
+      "nodeSchemas": {
+        "n0": {
+          "label": "animal",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [
+            {
+              "property": "animal_id",
+              "type": "string",
+              "identifier": "wb6IYyD3zFDM0S-uWN1l-"
+            },
+            {
+              "property": "sex",
+              "type": "string",
+              "identifier": "5gcXvkNJYjCltMLafT8IU"
+            },
+            {
+              "property": "species",
+              "type": "string",
+              "identifier": "XQ5fQm0PsbnFaZ0QFTFRq"
+            }
+          ],
+          "key": {
+            "properties": [
+              "wb6IYyD3zFDM0S-uWN1l-"
+            ]
+          }
+        },
+        "n1": {
+          "label": "site",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [
+            {
+              "property": "site_id",
+              "type": "string",
+              "identifier": "LxiWajZsKTlZFpoXD7_FW"
+            },
+            {
+              "property": "site_type",
+              "type": "string",
+              "identifier": "Dy7T_1VaO35TGzvGTg_bZ"
+            }
+          ],
+          "key": {
+            "properties": [
+              "LxiWajZsKTlZFpoXD7_FW"
+            ]
+          }
+        },
+        "n2": {
+          "label": "batch",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [
+            {
+              "property": "batch_id",
+              "type": "string",
+              "identifier": "49FCqPjdDmDYAG3ZPVGSs"
+            }
+          ],
+          "key": {
+            "properties": [
+              "49FCqPjdDmDYAG3ZPVGSs"
+            ]
+          }
+        },
+        "n3": {
+          "label": "movement",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [
+            {
+              "property": "movement_id",
+              "type": "string",
+              "identifier": "CJX1FFp8BVdhjYgJBf6bJ"
+            }
+          ],
+          "key": {
+            "properties": [
+              "CJX1FFp8BVdhjYgJBf6bJ"
+            ]
+          }
+        },
+        "n4": {
+          "label": "vehicle",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [
+            {
+              "property": "vehicle_reg",
+              "type": "string",
+              "identifier": "KfzTKQ61uhGURPsuXLBnF"
+            }
+          ],
+          "key": {
+            "properties": [
+              "KfzTKQ61uhGURPsuXLBnF"
+            ]
+          }
+        },
+        "n6": {
+          "label": "location",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [
+            {
+              "property": "location_id",
+              "type": "string",
+              "identifier": "wvgXagLOVB0pCefqmVOd9"
+            },
+            {
+              "property": "easting",
+              "type": "string",
+              "identifier": "1WgKqnWSZf6iB2vDlFq8t"
+            },
+            {
+              "property": "northing",
+              "type": "string",
+              "identifier": "c3VBsl5CSNpkL58EdE9vL"
+            }
+          ],
+          "key": {
+            "properties": [
+              "wvgXagLOVB0pCefqmVOd9"
+            ]
+          }
+        },
+        "n7": {
+          "label": "journey",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [],
+          "key": {
+            "properties": []
+          }
+        },
+        "n8": {
+          "label": "leg",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [],
+          "key": {
+            "properties": []
+          }
+        },
+        "n9": {
+          "label": "haulier",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [],
+          "key": {
+            "properties": []
+          }
+        },
+        "n10": {
+          "label": "keeper",
+          "additionLabels": [],
+          "labelProperties": [],
+          "properties": [],
+          "key": {
+            "properties": []
+          }
+        }
+      },
+      "relationshipSchemas": {
+        "n0": {
+          "type": "born_at",
+          "sourceNodeSchema": "n0",
+          "targetNodeSchema": "n1",
+          "properties": [
+            {
+              "property": "date_of_birth",
+              "type": "datetime",
+              "identifier": "TnybB5F79WmcHl2d3ui23"
+            }
+          ]
+        },
+        "n1": {
+          "type": "died_at",
+          "sourceNodeSchema": "n0",
+          "targetNodeSchema": "n1",
+          "properties": [
+            {
+              "property": "date_of_death",
+              "type": "datetime",
+              "identifier": "VEe5bLK7Wa6UmFGYWdbjw"
+            },
+            {
+              "property": "reason_for_death",
+              "type": "string",
+              "identifier": "coWpCJjYdByr9h_7VfjJt"
+            }
+          ]
+        },
+        "n2": {
+          "type": "grouped_in",
+          "sourceNodeSchema": "n0",
+          "targetNodeSchema": "n2",
+          "properties": [
+            {
+              "property": "journey_start_date",
+              "type": "string",
+              "identifier": "drIiz2n2jdjtCYKHVV-dW"
+            },
+            {
+              "property": "journey_end_date",
+              "type": "string",
+              "identifier": "ayaOFS4baAdzEg6evCrS8"
+            }
+          ]
+        },
+        "n8": {
+          "type": "located_at",
+          "sourceNodeSchema": "n1",
+          "targetNodeSchema": "n6",
+          "properties": []
+        },
+        "n9": {
+          "type": "to",
+          "sourceNodeSchema": "n3",
+          "targetNodeSchema": "n1",
+          "properties": [
+            {
+              "property": "movement_end_date",
+              "type": "string",
+              "identifier": "2XUy3loXvNLHhgi7R23oa"
+            }
+          ]
+        },
+        "n10": {
+          "type": "from",
+          "sourceNodeSchema": "n3",
+          "targetNodeSchema": "n1",
+          "properties": [
+            {
+              "property": "movement_start_date",
+              "type": "string",
+              "identifier": "PQeo8URula80M0unvAiOM"
+            }
+          ]
+        },
+        "n11": {
+          "type": "includes",
+          "sourceNodeSchema": "n3",
+          "targetNodeSchema": "n2",
+          "properties": [
+            {
+              "property": "date_added_to_batch",
+              "type": "string",
+              "identifier": "w25MjIACz5U9hjlqt6ZX5"
+            },
+            {
+              "property": "date_removed_from_batch",
+              "type": "string",
+              "identifier": "bpNoVtVo5qeMqCrXm97Pt"
+            }
+          ]
+        },
+        "n12": {
+          "type": "transported_by",
+          "sourceNodeSchema": "n7",
+          "targetNodeSchema": "n4",
+          "properties": []
+        },
+        "n13": {
+          "type": "delivered_in",
+          "sourceNodeSchema": "n3",
+          "targetNodeSchema": "n7",
+          "properties": []
+        },
+        "n14": {
+          "type": "",
+          "sourceNodeSchema": "n8",
+          "targetNodeSchema": "n2",
+          "properties": []
+        },
+        "n15": {
+          "type": "to",
+          "sourceNodeSchema": "n8",
+          "targetNodeSchema": "n1",
+          "properties": []
+        },
+        "n16": {
+          "type": "from",
+          "sourceNodeSchema": "n8",
+          "targetNodeSchema": "n1",
+          "properties": []
+        },
+        "n17": {
+          "type": "contains",
+          "sourceNodeSchema": "n7",
+          "targetNodeSchema": "n8",
+          "properties": []
+        },
+        "n18": {
+          "type": "operated_by",
+          "sourceNodeSchema": "n7",
+          "targetNodeSchema": "n9",
+          "properties": []
+        },
+        "n19": {
+          "type": "reports",
+          "sourceNodeSchema": "n10",
+          "targetNodeSchema": "n3",
+          "properties": [
+            {
+              "property": "report_id",
+              "type": "string",
+              "identifier": "mdxi2jfhPCpOx8thyrBSk"
+            },
+            {
+              "property": "report_date",
+              "type": "string",
+              "identifier": "e9-sm0TQU7mXHcIZ-AgB5"
+            }
+          ]
+        }
+      }
+    },
+    "mappingModel": {
+      "nodeMappings": {
+        "n0": {
+          "nodeSchema": "n0",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": [
+            {
+              "field": "animal_id"
+            },
+            {
+              "field": "sex"
+            },
+            {
+              "field": "species"
+            }
+          ]
+        },
+        "n1": {
+          "nodeSchema": "n1",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": [
+            {
+              "field": "site_id"
+            },
+            {
+              "field": "site_type"
+            }
+          ]
+        },
+        "n2": {
+          "nodeSchema": "n2",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": [
+            {
+              "field": "batch_id"
+            }
+          ]
+        },
+        "n3": {
+          "nodeSchema": "n3",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": [
+            {
+              "field": "movement_id"
+            }
+          ]
+        },
+        "n4": {
+          "nodeSchema": "n4",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": [
+            {
+              "field": "vehicle_reg"
+            }
+          ]
+        },
+        "n6": {
+          "nodeSchema": "n6",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": [
+            {
+              "field": "location_id"
+            },
+            {
+              "field": "easting"
+            },
+            {
+              "field": "northing"
+            }
+          ]
+        },
+        "n7": {
+          "nodeSchema": "n7",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": []
+        },
+        "n8": {
+          "nodeSchema": "n8",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": []
+        },
+        "n9": {
+          "nodeSchema": "n9",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": []
+        },
+        "n10": {
+          "nodeSchema": "n10",
+          "fileSchema": "my_dataframe.csv",
+          "mappings": []
+        }
+      },
+      "relationshipMappings": {
+        "n0": {
+          "relationshipSchema": "n0",
+          "mappings": [
+            {
+              "field": "date_of_birth"
+            }
+          ],
+          "sourceMappings": [
+            {
+              "field": "animal_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "site_id"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n1": {
+          "relationshipSchema": "n1",
+          "mappings": [
+            {
+              "field": "date_of_death"
+            },
+            {
+              "field": "reason_for_death"
+            }
+          ],
+          "sourceMappings": [
+            {
+              "field": "animal_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "death_site_id"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n2": {
+          "relationshipSchema": "n2",
+          "mappings": [
+            {
+              "field": "journey_start_date"
+            },
+            {
+              "field": "journey_end_date"
+            }
+          ],
+          "sourceMappings": [
+            {
+              "field": "animal_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "batch_id"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n8": {
+          "relationshipSchema": "n8",
+          "mappings": [],
+          "sourceMappings": [
+            {
+              "field": "site_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "location_id"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n9": {
+          "relationshipSchema": "n9",
+          "mappings": [
+            {
+              "field": "movement_end_date"
+            }
+          ],
+          "sourceMappings": [
+            {
+              "field": "movement_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "movement_destination"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n10": {
+          "relationshipSchema": "n10",
+          "mappings": [
+            {
+              "field": "movement_start_date"
+            }
+          ],
+          "sourceMappings": [
+            {
+              "field": "movement_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "movement_origin"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n11": {
+          "relationshipSchema": "n11",
+          "mappings": [
+            {
+              "field": "date_added_to_batch"
+            },
+            {
+              "field": "date_removed_from_batch"
+            }
+          ],
+          "sourceMappings": [
+            {
+              "field": "movement_id"
+            }
+          ],
+          "targetMappings": [
+            {
+              "field": "batch_id"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n12": {
+          "relationshipSchema": "n12",
+          "mappings": [],
+          "sourceMappings": [],
+          "targetMappings": [
+            {
+              "field": "vehicle_reg"
+            }
+          ],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n13": {
+          "relationshipSchema": "n13",
+          "mappings": [],
+          "sourceMappings": [
+            {
+              "field": "movement_id"
+            }
+          ],
+          "targetMappings": [],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n14": {
+          "relationshipSchema": "n14",
+          "mappings": [],
+          "sourceMappings": [],
+          "targetMappings": []
+        },
+        "n15": {
+          "relationshipSchema": "n15",
+          "mappings": [],
+          "sourceMappings": [],
+          "targetMappings": [],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n16": {
+          "relationshipSchema": "n16",
+          "mappings": [],
+          "sourceMappings": [],
+          "targetMappings": [],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n17": {
+          "relationshipSchema": "n17",
+          "mappings": [],
+          "sourceMappings": [],
+          "targetMappings": []
+        },
+        "n18": {
+          "relationshipSchema": "n18",
+          "mappings": [],
+          "sourceMappings": [],
+          "targetMappings": [],
+          "fileSchema": "my_dataframe.csv"
+        },
+        "n19": {
+          "relationshipSchema": "n19",
+          "mappings": [
+            {},
+            {}
+          ],
+          "sourceMappings": [],
+          "targetMappings": [],
+          "fileSchema": "my_dataframe.csv"
+        }
+      }
+    }
+  }
+}
