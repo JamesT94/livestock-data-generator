@@ -7,20 +7,28 @@ Generate the following:
     - And corresponding Locations
 - Vehicles
     - Just registrations for now
-- Journeys (and Batches)
+- Keepers
+    - not done yet
+- Hauliers
+    - not done yet
+- Movements (and Batches)
     - Select random site
     - Shortlist moveable animals
     - Take random selection and move into batch
-    - Create journey instance and assign vehicle before moving to appropriate site
+    - Create movement instance and assign vehicle before moving to appropriate site
     - Remove animals from batch
 
     
 TODO:
-- create ownership concept, so animals can be sold and transferred between keepers (and they can report movements)
+- stop movements running without any available animals
+- revert journeys to become movements DONE
+- add keepers DONE
+- add reports to movements DONE
+- add hauliers
+- add journeys
+- add legs (same as movement but with different attributes?)
 - create a "size" variable for sites. So we can have small farms vs mega farms, high traffic low traffic etc.
     - size should also increase likelihood animals are moved to/from there
-- animals should have to be at a slaughterhouse to have the slaughtered death event
-
 """
 
 import pandas as pd
@@ -28,7 +36,10 @@ import random
 from datetime import datetime, timedelta
 
 # Creating the final dataframe (empty)
-headers = ["animal_id", "sex", "species", "site_id", "site_type", "location_id", "easting", "northing", "date_of_birth", "date_of_death", "death_site_id", "reason_for_death", "batch_id", "date_added_to_batch", "date_removed_from_batch", "vehicle_reg", "journey_id", "journey_origin", "journey_destination", "journey_start_date", "journey_end_date"]
+headers = ["animal_id", "sex", "species", "site_id", "site_type", "location_id", "easting", "northing", "date_of_birth", "date_of_death",
+           "death_site_id", "reason_for_death", "batch_id", "date_added_to_batch", "date_removed_from_batch", "vehicle_reg", "movement_id",
+           "movement_origin", "movement_destination", "movement_start_date", "movement_end_date", "keeper_id", "keeper_name",
+           "report_id", "report_date"]
 df = pd.DataFrame(columns=headers)
 
 ####################
@@ -49,9 +60,9 @@ site_config = {
     "slaughterhouse": 2
 }
 
-# Number of vehicles and journeys
+# Number of vehicles and movements
 number_of_vehicles = 8
-number_of_journeys = 50
+number_of_movements = 50
 
 
 # Dates config
@@ -80,11 +91,11 @@ for animal_species in animal_config.keys():
 df = df._append(animals_df)
 
 
-#######################
-### Site Generation ###
-#######################
+################################
+### Site & Keeper Generation ###
+################################
 
-sites_df = pd.DataFrame(columns=["site_id", "site_type", "location_id", "easting", "northing"])
+sites_and_keepers_df = pd.DataFrame(columns=["site_id", "site_type", "location_id", "easting", "northing", "keeper_id", "keeper_name"])
 
 id = 1  # Starting ID
 for site_type in site_config.keys():
@@ -93,13 +104,15 @@ for site_type in site_config.keys():
                    "site_type": site_type, 
                    "location_id": f"loc_{id}", 
                    "easting": f"44{random.randint(100, 999)}", 
-                   "northing": f"20{random.randint(100, 999)}"}
+                   "northing": f"20{random.randint(100, 999)}",
+                   "keeper_id": f"keeper_{id}",
+                   "keeper_name": "John Smith"}
         id += 1
         
-        sites_df = sites_df._append(new_row, ignore_index=True)
+        sites_and_keepers_df = sites_and_keepers_df._append(new_row, ignore_index=True)
 
 # Appending to the main dataframe
-df = df._append(sites_df)
+df = df._append(sites_and_keepers_df)
 
 
 
@@ -166,15 +179,15 @@ df = df._append(deaths_df)
 
 
 ##########################
-### Journey Generation ###
+### Movement Generation ###
 ##########################
 
 """
 1. Randomly select origin site and destination site
 2. Select eligible animals from origin site
 3. Put the animals in a batch
-4. Create journey instance and assign variables
-5. Remove animals from the batch post-journey
+4. Create movement instance and assign variables
+5. Remove animals from the batch post-movement
 """
 
 # Resetting the index of the main dataframe
@@ -207,15 +220,15 @@ def alive_animals():
 
 # Of the alive animals, determine which are at the provided site
 def animals_at_site(site):
-    # Find most recent journey end date
+    # Find most recent movement end date
     alive_animals_df = df[df['animal_id'].isin(alive_animals())]
 
-    # Convert 'journey_end_date' to datetime
-    alive_animals_df.loc['journey_end_date'] = pd.to_datetime(alive_animals_df['journey_end_date'])
+    # Convert 'movement_end_date' to datetime
+    alive_animals_df.loc['movement_end_date'] = pd.to_datetime(alive_animals_df['movement_end_date'])
 
-    # Sort DataFrame by 'animal_id' and 'journey_end_date'
-    alive_animals_df_sorted = alive_animals_df.sort_values(by=['animal_id', 'journey_end_date'])
-    # earliest_start_date = alive_animals_df_sorted['journey_end_date'].max()  TODO fix this?
+    # Sort DataFrame by 'animal_id' and 'movement_end_date'
+    alive_animals_df_sorted = alive_animals_df.sort_values(by=['animal_id', 'movement_end_date'])
+    # earliest_start_date = alive_animals_df_sorted['movement_end_date'].max()  TODO fix this?
 
     # Keep only the latest row for each unique value in 'animal_id'
     animals_latest_site = alive_animals_df_sorted.groupby('animal_id').tail(1)
@@ -231,15 +244,15 @@ def select_destination(chosen_type):
     return random.choice(possible_sites["site_id"].to_list())
 
 
-# Create a batch for the animals to complete the journey within
-def create_batch(batch_id, animals_to_be_moved, journey_start_date):
+# Create a batch for the animals to complete the movement within
+def create_batch(batch_id, animals_to_be_moved, movement_start_date):
     batch_df = pd.DataFrame(columns=["batch_id", "animal_id", "date_added_to_batch"])
 
     for animal_id in animals_to_be_moved:
         new_row = {
             "batch_id": batch_id,
             "animal_id": animal_id,
-            "date_added_to_batch": journey_start_date
+            "date_added_to_batch": movement_start_date
         }
 
         batch_df = batch_df._append(new_row, ignore_index=True)
@@ -247,50 +260,66 @@ def create_batch(batch_id, animals_to_be_moved, journey_start_date):
     return batch_df
 
 
-# Create the journey and "move" the animals. Then remove them from the batch
-def create_journey_remove_batch(journey_id, batch_id, animals_to_be_moved, journey_start_date, journey_end_date):
-    journey_df = pd.DataFrame(columns=["journey_id", "journey_origin", "journey_destination", "journey_start_date", "journey_end_date", "vehicle_reg", "batch_id"])
+# Create the movement, report it from origin keeper and "move" the animals. Then remove them from the batch and report the movement from recipient keeper
+def create_movement_remove_batch(movement_id, origin_site, destination_site, batch_id, animals_to_be_moved, movement_start_date, movement_end_date):
+    movement_df = pd.DataFrame(columns=["movement_id", "movement_origin", "movement_destination", "movement_start_date", "movement_end_date",
+                                        "vehicle_reg", "batch_id", "keeper_id", "report_id", "report_time"])
 
     new_row = {
-        "journey_id": journey_id,
-        "journey_origin": origin_site,
-        "journey_destination": destination_site,
-        "journey_start_date": journey_start_date,
-        "journey_end_date": journey_end_date,
+        "movement_id": movement_id,
+        "movement_origin": origin_site,
+        "movement_destination": destination_site,
+        "movement_start_date": movement_start_date,
+        "movement_end_date": movement_end_date,
         "vehicle_reg": random.choice(df.loc[df['vehicle_reg'].notnull(), 'vehicle_reg'].tolist()),
-        "batch_id": batch_id
+        "batch_id": batch_id,
+        "keeper_id": f"keeper_{origin_site.split('_')[-1]}",
+        "report_id": f"{movement_id}_0",
+        "report_date": movement_start_date
     }
 
-    journey_df = journey_df._append(new_row, ignore_index=True)
+    movement_df = movement_df._append(new_row, ignore_index=True)
 
     # Take animals out of batch
-    remove_batch_df = pd.DataFrame(columns=["batch_id", "animal_id", "date_removed_from_batch"])
+    remove_batch_df = pd.DataFrame(columns=["batch_id", "animal_id", "date_removed_from_batch", "report_id", "report_time"])
 
     for animal_id in animals_to_be_moved:
         new_row = {
             "batch_id": batch_id,
             "animal_id": animal_id,
-            "date_removed_from_batch": journey_end_date
+            "date_removed_from_batch": movement_end_date
         }
 
         remove_batch_df = remove_batch_df._append(new_row, ignore_index=True)
+
+    # Report the movement after journey is complete
+    arrival_report_df = pd.DataFrame(columns=["movement_id", "keeper_id", "report_id", "report_time"])
+
+    new_row = {
+        "movement_id": movement_id,
+        "keeper_id": f"keeper_{destination_site.split('_')[-1]}",
+        "report_id": f"{movement_id}_1",
+        "report_date": movement_end_date
+    }
+
+    arrival_report_df = arrival_report_df._append(new_row, ignore_index=True)
     
-    return journey_df, remove_batch_df
+    return movement_df, remove_batch_df, arrival_report_df
 
 
 
-# Each iteration of this code creates 1 journey
-journey_start_date = birth_start_date + timedelta(days=500)
+# Each iteration of this code creates 1 movement
+movement_start_date = birth_start_date + timedelta(days=500)
 
-for i in range(number_of_journeys):
+for i in range(number_of_movements):
 
     # Select origin site randomly
     origin_site = select_origin()
 
-    # Shortlist animals eligible for journey
+    # Shortlist animals eligible for movement
     candidate_animals = animals_at_site(origin_site)
 
-    # while len(candidate_animals) < 1: TODO fix it so we cant do empty journeys
+    # while len(candidate_animals) < 1: TODO fix it so we cant do empty movements
     #     origin_site = select_origin()
     #     candidate_animals = animals_at_site(origin_site)
 
@@ -301,26 +330,28 @@ for i in range(number_of_journeys):
     # Take a selection of the animals available at the site
     animals_to_be_moved = candidate_animals.sample(frac=0.7, random_state=42)
 
-    # Determine destination site based on journey purpose
+    # Determine destination site based on movement purpose
     destination_types = list(site_config.keys())
     chosen_type = random.choice(destination_types)
 
     destination_site = select_destination(chosen_type)
 
-    # allow 4-7 days to pass between each journey
-    journey_start_date += timedelta(days=random.randint(4, 7))
+    # allow 4-7 days to pass between each movement
+    movement_start_date += timedelta(days=random.randint(4, 7))
 
     # put the chosen animals into a batch and assign start date
-    batch_df = create_batch(i, animals_to_be_moved, journey_start_date)
+    batch_df = create_batch(i, animals_to_be_moved, movement_start_date)
     df = df._append(batch_df)
 
 
-    # create the journey instance and assign origin, destination, start and end dates, batch, vehicle
-    journey_end_date = journey_start_date + timedelta(days=random.randint(1, 3))
+    # create the movement instance and assign origin, destination, start and end dates, batch, vehicle
+    movement_end_date = movement_start_date + timedelta(days=random.randint(1, 3))
 
-    journey_df, remove_batch_df = create_journey_remove_batch(i, i, animals_to_be_moved, journey_start_date, journey_end_date)
-    df = df._append(journey_df)
+    movement_df, remove_batch_df, arrival_report_df = create_movement_remove_batch(i, origin_site, destination_site, i, animals_to_be_moved,
+                                                                                    movement_start_date, movement_end_date)
+    df = df._append(movement_df)
     df = df._append(remove_batch_df)
+    df = df._append(arrival_report_df)
 
     df = df.reset_index(drop=True)
 
